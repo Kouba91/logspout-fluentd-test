@@ -66,11 +66,11 @@ type Adapter struct {
 
 // Stream handles a stream of messages from Logspout. Implements router.logAdapter.
 func (ad *Adapter) Stream(logstream chan *router.Message) {
-	debug("received message from container: ", message.Container.ID, message.Container.Name);
+	debug("received message from container: ", message.Container.ID, message.Container.Name)
 	for message := range logstream {
 		// Skip if message is empty
 		messageIsEmpty, err := regexp.MatchString("^[[:space:]]*$", message.Data)
-		if err != nill {
+		if err != nil {
 			debug("error while checking message.", err)
 		}
 		if messageIsEmpty {
