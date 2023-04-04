@@ -66,9 +66,13 @@ type Adapter struct {
 
 // Stream handles a stream of messages from Logspout. Implements router.logAdapter.
 func (ad *Adapter) Stream(logstream chan *router.Message) {
+	debug("received message from container: ", message.Container.ID, message.Container.Name);
 	for message := range logstream {
 		// Skip if message is empty
 		messageIsEmpty, err := regexp.MatchString("^[[:space:]]*$", message.Data)
+		if err != nill {
+			debug("error while checking message.", err)
+		}
 		if messageIsEmpty {
 			debug("Skipping empty message!")
 			continue
@@ -94,7 +98,7 @@ message.Container.Config.Hostname
 			"source":         message.Source,
 		}
 
-		debug(tag, message.Time, record)
+		// debug(tag, message.Time, record)
 
 		// Send to fluentd
 		err = ad.writer.PostWithTime(tag, message.Time, record)
